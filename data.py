@@ -20,17 +20,17 @@ def generate_data(num_patients, num_appointments_per_patient):
             appointment_id = len(data) + 1
             doctor_id = random.randint(2000, 2999)
             doctor_age = ((5-rating)/5)*80+patient_age
-            doctor_location = (patient_location + random.randint(-rating*10, rating*10))
+            doctor_location = (patient_location + random.randint(-(5-rating)*10, (5-rating)*10))
             doctor_type = previous_doctor_type if rating > 3 else random.randint(0, 100)
             experience_in_years = 30*((rating+random.uniform(-1,1))/5)
             patients_in_lifetime = 500*(rating+random.uniform(-1,1)/5)
             patients_in_queue = 10*(rating+random.uniform(-1,1)/5)
+            prev_visited= 1 if rating >4 else 0
 
             data.append([
-                appointment_id, patient_id, patient_age, patient_gender, patient_health_condition,
-                patient_location, previous_doctor_type, last_appointment_days, doctor_id,
+                appointment_id, patient_id, patient_age, patient_gender, patient_health_condition, previous_doctor_type, last_appointment_days, doctor_id,
                 doctor_age, doctor_location, doctor_type, experience_in_years, patients_in_lifetime,
-                patients_in_queue, rating
+                patients_in_queue,prev_visited, rating
             ])
 
     return data
@@ -44,14 +44,13 @@ def write_to_csv(file_path, header, data):
 
 # Define header for the CSV file
 csv_header = [
-    'Appointment ID', 'Patient ID', 'Patient Age', 'Patient Gender', 'Patient Health Condition',
-    'Patient Location', 'Previous Doctor Type', 'Last Appointment (Days)', 'Doctor ID',
+    'Appointment ID', 'Patient ID', 'Patient Age', 'Patient Gender', 'Patient Health Condition', 'Previous Doctor Type', 'Last Appointment (Days)', 'Doctor ID',
     'Doctor Age', 'Doctor Location', 'Doctor Type', 'Experience (Years)', 'Patients in Lifetime',
-    'Patients in Queue', 'Rating'
+    'Patients in Queue','Pev_Visited', 'Rating'
 ]
 
 # Generate and write data to CSV file
 num_patients = 1000
 num_appointments_per_patient = 10  # Set to 5 to ensure each rating is used for each patient
 csv_data = generate_data(num_patients, num_appointments_per_patient)
-write_to_csv('./new_trail/generated_data.csv', csv_header, csv_data)
+write_to_csv('generated_data.csv', csv_header, csv_data)
